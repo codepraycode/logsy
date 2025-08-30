@@ -1,0 +1,24 @@
+{
+  "name": "logsy",
+  "version": "1.0.0",
+  "description": "Logsy is a lightweight and user-friendly staff clock-in/clock-out system designed to simplify attendance tracking for teams and small businesses. With clean interfaces and accurate time logging, Logsy helps employers monitor work hours, reduce time fraud, and generate useful reports with ease. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/server/index.js",
+    "dev:live": "nodemon src/server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "duckdb-async": "^1.3.2",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
