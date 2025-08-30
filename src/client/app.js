@@ -1,17 +1,62 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const submitBtn = document.getElementById('submit');
-// const nameInput = document.getElementById('name');
 const messageDiv = document.getElementById('message');
+const currentTimeElement = document.getElementById('current-time');
+const currentDateElement = document.getElementById('current-date');
+const actionButtons = document.querySelectorAll('.action-btn');
+
+// State variables
+let selectedType = null;
+
+// Initialize clock
+function updateDateTime() {
+    const now = new Date();
+
+    // Update time
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    currentTimeElement.textContent = now.toLocaleTimeString('en-US', timeOptions);
+
+    // Update date
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    currentDateElement.textContent = now.toLocaleDateString('en-US', dateOptions);
+}
+
+// Update time immediately and set interval
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+// Action selection
+actionButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove selected class from all buttons
+        actionButtons.forEach(b => b.classList.remove('selected'));
+
+        // Add selected class to clicked button
+        btn.classList.add('selected');
+
+        // Update selected type
+        selectedType = btn.getAttribute('data-type');
+
+        // Enable submit button if it was disabled
+        submitBtn.disabled = false;
+    });
+});
 
 // Request camera stream
 async function startCamera() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: 'environment',
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        });
         video.srcObject = stream;
     } catch (err) {
-        messageDiv.textContent = '⚠️ Unable to access camera.';
-        console.error(err);
+        showMessage('⚠️ Unable to access camera. Please check permissions.', 'error');
+        console.error('Camera error:', err);
     }
 }
 
@@ -22,57 +67,79 @@ function capturePhoto() {
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0);
     return new Promise((resolve) => {
-        canvas.toBlob(resolve, 'image/png');
+        canvas.toBlob(resolve, 'image/jpeg', 0.8);
     });
+}
+
+// Show message with type
+function showMessage(text, type = 'processing') {
+    messageDiv.textContent = text;
+    messageDiv.className = '';
+
+    switch (type) {
+        case 'success':
+            messageDiv.classList.add('message-success');
+            break;
+        case 'error':
+            messageDiv.classList.add('message-error');
+            break;
+        default:
+            messageDiv.classList.add('message-processing');
+    }
 }
 
 // Handle submit click
 submitBtn.addEventListener('click', async () => {
-    
-    messageDiv.textContent = '';
+    // Validate selection
+    if (!selectedType) {
+        showMessage('Please select Clock In or Clock Out first.', 'error');
+        return;
+    }
+
+    // Update UI state
+    showMessage('Capturing image...', 'processing');
     submitBtn.disabled = true;
 
-    // if (!name) {
-    //     messageDiv.textContent = 'Please enter your name.';
-    //     submitBtn.disabled = false;
-    //     nameInput.focus();
-    //     return;
-    // }
-
-    
     try {
-        const type = document.querySelector('input[name="type"]:checked').value;
-        console.debug("Here!", type)
-
+        // Capture photo
         const photoBlob = await capturePhoto();
 
+        // Update message
+        showMessage('Submitting...', 'processing');
+
+        // Prepare form data
         const formData = new FormData();
-        formData.append('type', type);
-        formData.append('photo', photoBlob, 'photo.png');
+        formData.append('type', selectedType);
+        formData.append('photo', photoBlob, 'photo.jpg');
 
-        messageDiv.textContent = 'Submitting...';
-
+        // Submit to server
         const res = await fetch('/api/clock', {
             method: 'POST',
             body: formData
         });
 
         if (res.ok) {
-            messageDiv.textContent = '✅ Logged successfully!';
+            showMessage('✅ Successfully logged!', 'success');
+            submitBtn.classList.add('success-pulse');
+            setTimeout(() => {
+                submitBtn.classList.remove('success-pulse');
+            }, 500);
         } else {
             const errorData = await res.json();
-            messageDiv.textContent = `❌ Error: ${errorData.error || 'Failed to log.'}`;
+            showMessage(`❌ Error: ${errorData.error || 'Failed to log time.'}`, 'error');
         }
     } catch (err) {
-        console.error(err);
-        messageDiv.textContent = '❌ Unexpected error occurred.';
+        console.error('Submission error:', err);
+        showMessage('❌ Network error. Please try again.', 'error');
     } finally {
-        submitBtn.disabled = false;
-        const radios = document.querySelectorAll('input[name="type"]');
-        radios.forEach(radio => radio.checked = false);
-        setTimeout(()=>{
-            messageDiv.textContent = ""
-        }, 2000)
+        // Reset after delay
+        setTimeout(() => {
+            actionButtons.forEach(b => b.classList.remove('selected'));
+            selectedType = null;
+            submitBtn.disabled = false;
+            messageDiv.textContent = '';
+            messageDiv.className = '';
+        }, 3000);
     }
 });
 
