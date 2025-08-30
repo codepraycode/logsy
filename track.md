@@ -18,3 +18,9 @@ Three commands in git to work with
 - Markdown
 - Vim
 - bash/powershell/md - working with terminal
+- pnpm
+- sql
+- expressjs
+- mutler
+- cors
+- node_modules
