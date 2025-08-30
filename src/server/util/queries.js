@@ -6,7 +6,6 @@
 const createTableQuery = `
     CREATE TABLE IF NOT EXISTS logs (
       id DOUBLE PRIMARY KEY,
-      name TEXT,
       type TEXT,
       timestamp TEXT,
       photoPath TEXT
@@ -14,7 +13,7 @@ const createTableQuery = `
 
 `
 
-const insetClockDataQuery = "INSERT INTO logs (id, name, type, timestamp, photoPath) VALUES (?, ?, ?, ?, ?)"
+const insetClockDataQuery = "INSERT INTO logs (id, type, timestamp, photoPath) VALUES (?, ?, ?, ?)"
 const fetchAllClockDataQuery = `SELECT * FROM logs`
 const fetchClockDataQuery = `
     SELECT * FROM logs

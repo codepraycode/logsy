@@ -32,13 +32,13 @@ initDB().then((db) => {
 
     app.post('/api/clock', upload.single('photo'), async (req, res) => {
         try {
-            const { name, type } = req.body;
+            const { type } = req.body;
             const timestamp = new Date().toISOString();
             const photoPath = req.file ? `/uploads/${req.file.filename}` : '';
 
             const id = new Date().getTime();
 
-            await db.run(insetClockDataQuery, id, name, type, timestamp, photoPath);
+            await db.run(insetClockDataQuery, id, type, timestamp, photoPath);
 
             res.json({ success: true });
         } catch (err) {

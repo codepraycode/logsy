@@ -9,20 +9,33 @@
 <body>
 
 
+    <header>
+        <h1>Logsy - Nextworks Limited</h1>
+    </header>
+
     <main>
-        
-        <h1>Clock In/Out</h1>
-        
-        <input type="text" id="name" placeholder="Your Name" />
-        
-        <select id="type">
-            <option value="in">Clock In</option>
-            <option value="out">Clock Out</option>
-        </select>
-        <video id="video" autoplay playsinline></video>
+        <h2>Clock In / Clock Out</h2>
+
+       <div class="radio-group" role="radiogroup" aria-label="Select clock in or clock out">
+            <input type="radio" id="clock-in" name="type" value="in" />
+            <label for="clock-in">Clock In</label>
+
+            <input type="radio" id="clock-out" name="type" value="out" />
+            <label for="clock-out">Clock Out</label>
+        </div>
+
+
+        <video id="video" autoplay playsinline muted></video>
         <canvas id="canvas" hidden></canvas>
-        <button id="submit">Submit</button>
+
+        <button id="submit" aria-live="polite">Submit</button>
+
+        <div id="message" role="alert" aria-live="assertive"></div>
     </main>
+
+    <footer>
+        <small>&copy; 2025 Nextworks Limited. All rights reserved.</small>
+    </footer>
 
     <script src="./app.js"></script>
 </body>
