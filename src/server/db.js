@@ -1,10 +1,15 @@
-const Database = require("better-sqlite3");
-const { createTableQuery } = require("./util/queries");
+const { Database } = require('duckdb-async');
+const path = require('path');
+const { createTableQuery } = require('./util/queries');
 
-const db = new Database("logsy.db");
+const dbPath = path.join(__dirname, '../../logsy.duckdb');
 
-db.prepare(createTableQuery).run();
+// let db; // Declare once to reuse across the app
 
-module.exports = db;
+const initDB = async () => {
+    db = await Database.create(dbPath);
+    await db.run(createTableQuery);
+    return db;
+};
 
-
+module.exports = { initDB };

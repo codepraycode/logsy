@@ -1,8 +1,8 @@
+const path = require('path');
 const multer = require('multer');
-// Handle image uploads
 
 const storage = multer.diskStorage({
-    destination: './server/uploads/',
+    destination: path.join(__dirname, '../uploads'),
     filename: (req, file, cb) => {
         cb(null, Date.now() + '.png');
     },

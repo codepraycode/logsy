@@ -5,15 +5,17 @@
 
 const createTableQuery = `
     CREATE TABLE IF NOT EXISTS logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    type TEXT,
-    timestamp TEXT,
-    photo TEXT
-  )
+      id DOUBLE PRIMARY KEY,
+      name TEXT,
+      type TEXT,
+      timestamp TEXT,
+      photoPath TEXT
+    );
+
 `
 
-const insetClockDataQuery = `INSERT INTO logs (name, type, timestamp, photo) VALUES (?, ?, ?, ?)`
+const insetClockDataQuery = "INSERT INTO logs (id, name, type, timestamp, photoPath) VALUES (?, ?, ?, ?, ?)"
+const fetchAllClockDataQuery = `SELECT * FROM logs`
 const fetchClockDataQuery = `
     SELECT * FROM logs
     WHERE timestamp BETWEEN ? AND ?
@@ -23,5 +25,6 @@ const fetchClockDataQuery = `
 module.exports = {
     createTableQuery,
     insetClockDataQuery,
+  fetchAllClockDataQuery,
     fetchClockDataQuery
 }

@@ -24,3 +24,8 @@ Three commands in git to work with
 - mutler
 - cors
 - node_modules
+- html/ headers and linking
+- duckdb
+- nodemon
+- package.json
+- dependency and dev dependency in package.json
