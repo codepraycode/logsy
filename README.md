@@ -103,19 +103,19 @@ The server runs on port `3020` by default.
 
 ### 6. Development notes
 
-* The server exposes REST API endpoints under `/api`, including:
+- The server exposes REST API endpoints under `/api`, including:
 
-  * `/api/status` — Server health status
-  * `/api/clock` — POST endpoint to log clock-in/out with optional photo upload
-  * `/api/logs` — GET endpoint to fetch logs with optional date filters (`from`, `to`)
-* File uploads are saved in the `uploads` directory (make sure it exists and is writable).
-* Example queries use prepared statements with parameters to avoid SQL injection.
+  - `/api/status` — Server health status
+  - `/api/clock` — POST endpoint to log clock-in/out with optional photo upload
+  - `/api/logs` — GET endpoint to fetch logs with optional date filters (`from`, `to`)
+- File uploads are saved in the `uploads` directory (make sure it exists and is writable).
+- Example queries use prepared statements with parameters to avoid SQL injection.
 
 ---
 
 ### Troubleshooting
 
-* If you encounter errors related to DuckDB native modules, run the rebuild step again:
+- If you encounter errors related to DuckDB native modules, run the rebuild step again:
 
 ```bash
 pnpm rebuild duckdb
@@ -127,16 +127,16 @@ or
 npm rebuild duckdb
 ```
 
-* Make sure your Node.js version matches the native modules installed (using [nvm](https://github.com/nvm-sh/nvm) helps manage this).
-* Verify that the `uploads` directory exists and is writable to avoid issues with file uploads.
+- Make sure your Node.js version matches the native modules installed (using [nvm](https://github.com/nvm-sh/nvm) helps manage this).
+- Verify that the `uploads` directory exists and is writable to avoid issues with file uploads.
 
 ---
 
 ### Additional Tips
 
-* Use environment variables or configuration files to customize the database file path or server port in production.
-* For production, consider using a process manager like [`pm2`](https://pm2.keymetrics.io/) for running the Node.js server.
-* You can improve developer experience with hot reload by using [`nodemon`](https://nodemon.io/).
+- Use environment variables or configuration files to customize the database file path or server port in production.
+- For production, consider using a process manager like [`pm2`](https://pm2.keymetrics.io/) for running the Node.js server.
+- You can improve developer experience with hot reload by using [`nodemon`](https://nodemon.io/).
 
 ---
 
