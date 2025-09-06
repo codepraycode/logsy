@@ -1,6 +1,9 @@
  # Contributors information template
 
-To add your information, follow this pattern
+- Create a branch from `main`
+- create a file as <username>.txt e.g codepraycode.txt
+
+- Inside the file, add your information, following this pattern
 
 ```md
 
@@ -10,5 +13,6 @@ To add your information, follow this pattern
 
 ```
 
-Add to your branch, commit and push
-
+- Add to your branch, commit and push
+- Create your pull request
+- Request review from `codepraycode`
